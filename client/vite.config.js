@@ -1,6 +1,6 @@
-import path from "path";
-import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import path from "path";
 
 export default defineConfig({
   plugins: [react()],
@@ -9,21 +9,16 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  server: {
-    mimeTypes: {
-      'application/javascript': ['js', 'jsx'],
-      'text/plain': ['md']
-    }
-  },
   build: {
-    outDir: "dist", // ✅ Ensure correct output folder
+    outDir: "dist",
     assetsDir: "assets",
     rollupOptions: {
       output: {
-        entryFileNames: "assets/[name].js",
-        chunkFileNames: "assets/[name].js",
-        assetFileNames: "assets/[name].[ext]",
+        entryFileNames: "assets/[name].[hash].js",
+        chunkFileNames: "assets/[name].[hash].js",
+        assetFileNames: "assets/[name].[hash].[ext]",
       },
     },
   },
+  base: "/", // Explicit base path
 });

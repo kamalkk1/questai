@@ -1,4 +1,4 @@
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5001";
 
 export const apiRequest = async (endpoint, method = "GET", body = null, token = null) => {
   const headers = { "Content-Type": "application/json" };

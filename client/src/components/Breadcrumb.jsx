@@ -1,22 +1,41 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
+import axios from "axios"; // ✅ Import axios to fetch project data
 
 function Breadcrumb() {
   const location = useLocation();
-  const { id } = useParams(); // Get project ID from URL
+  const { projectId } = useParams(); // Get project ID from URL
   const [projectName, setProjectName] = useState(null);
 
   const pathSegments = location.pathname.split("/").filter((segment) => segment);
 
+  console.log("Breadcrumb Path Segments:", pathSegments);
+
+  // ✅ Fetch project name when `id` changes
   useEffect(() => {
-    if (id) {
-      // Fetch project details from backend
-      fetch(`${import.meta.env.VITE_API_URL}/api/projects/${id}`)
-        .then((res) => res.json())
-        .then((data) => setProjectName(data.name)) // Update state with project name
-        .catch((err) => console.error("Error fetching project:", err));
-    }
-  }, [id]);
+    if (!projectId) return; // Skip if no project ID
+
+    const fetchProjectName = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          console.error("No token found, unable to fetch project.");
+          return;
+        }
+
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/projects/${projectId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        console.log("Fetched Project Name:", res.data.name);
+        setProjectName(res.data.name); // ✅ Set project name
+      } catch (error) {
+        console.error("Error fetching project name:", error);
+      }
+    };
+
+    fetchProjectName();
+  }, [projectId]);
 
   return (
     <nav className="text-gray-600 mb-4">
@@ -28,11 +47,11 @@ function Breadcrumb() {
 
         {pathSegments.map((segment, index) => {
           let url = `/${pathSegments.slice(0, index + 1).join("/")}`;
-          let isProjectId = segment === id;
+          let isProjectId = segment === projectId;
           let isLast = index === pathSegments.length - 1;
-          let displayText = segment;
+          let displayText = segment?.includes("_") ? segment.split("_")[0] : segment;
 
-          // Replace project ID with project name
+          // ✅ Replace project ID with project name
           if (isProjectId && projectName) {
             displayText = projectName;
           }
@@ -48,14 +67,6 @@ function Breadcrumb() {
             </li>
           );
         })}
-
-        {/* ✅ Add final "Add your podcast" text */}
-        {pathSegments.length > 0 && (
-          <li className="flex items-center">
-            <span className="mx-2">/</span>
-            <span className="text-gray-500 capitalize">Add your podcast</span>
-          </li>
-        )}
       </ul>
     </nav>
   );

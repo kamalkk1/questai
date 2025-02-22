@@ -12,29 +12,64 @@ export default function Dashboard() {
 
   // ✅ Fetch projects from backend when component mounts
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/projects`)
-      .then((res) => res.json())
-      .then((data) => setProjects(data))
-      .catch((error) => console.error("Error fetching projects:", error));
+    const fetchProjects = async () => {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/projects`, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        
+        if (!res.ok) {
+          if (res.status === 401) navigate('/login');
+          throw new Error('Failed to fetch projects');
+        }
+        
+        const data = await res.json();
+        setProjects(data);
+      } catch (error) {
+        console.error("Error fetching projects:", error);
+      }
+    };
+    
+    fetchProjects();
   }, []);
 
-  // ✅ Create new project in backend & update state
   const handleCreateProject = async (name) => {
     try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error("No token found, redirecting to login.");
+        navigate('/login');
+        return;
+      }
+  
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/projects`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
         body: JSON.stringify({ name }),
       });
-
+  
+      if (!res.ok) {
+        if (res.status === 401) {
+          console.error("Unauthorized: Redirecting to login.");
+          navigate('/login');
+        }
+        throw new Error('Failed to create project');
+      }
+  
       const newProject = await res.json();
-      setProjects([...projects, newProject]); // Update projects list
+      setProjects([...projects, newProject]);
       setIsModalOpen(false);
-      navigate(`/upload/${newProject._id}`); // Navigate to Upload Flow
+      navigate(`/upload/${newProject._id}`);
     } catch (error) {
       console.error("Error creating project:", error);
     }
   };
+  
 
   return (
     <div className="min-h-screen bg-white">

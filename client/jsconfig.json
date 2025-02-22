@@ -4,14 +4,10 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "module": "ESNext",
-    "moduleResolution": "node",
-    "jsx": "react-jsx",
     "allowJs": true,
     "checkJs": true,
-    "types": ["vite/client"],
-    "lib": ["ES2015"]
+    "jsx": "react-jsx"
   },
-  "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"],
-  "exclude": ["node_modules", "dist"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }

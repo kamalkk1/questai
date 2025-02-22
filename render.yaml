@@ -11,4 +11,4 @@ services:
       - key: JWT_SECRET
         sync: false  # Manually set in Render Dashboard
       - key: CLIENT_URL
-        value: https://your-frontend.netlify.app  # Update after frontend deployment
+        value: https://quesaikamal.netlify.app/  # Update after frontend deployment

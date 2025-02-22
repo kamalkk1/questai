@@ -15,7 +15,6 @@ export default defineConfig({
       'text/plain': ['md']
     }
   },
-  base: "./", 
   build: {
     outDir: "dist", // ✅ Ensure correct output folder
     assetsDir: "assets",

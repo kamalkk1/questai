@@ -17,7 +17,7 @@ app.use((req, res, next) => {
     res.setHeader('X-Content-Type-Options', 'nosniff');
     next();
   });
-  
+
 app.use(cors({
     origin: allowedOrigins,
     credentials: true, // ✅ Allow cookies and authorization headers
@@ -30,6 +30,14 @@ app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/projects", require("./routes/projectRoutes"));
 app.use("/api/episodes", require("./routes/episodeRoutes"));
 app.use("/api/users", require("./routes/userRoutes"));
+
+// Serve static files from the React app's build directory
+app.use(express.static(path.join(__dirname, "../client/dist"))); // Adjust the path as needed
+
+// Handle client-side routing
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../client/dist/index.html")); // Adjust the path as needed
+});
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

@@ -3,7 +3,6 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
 export const AuthContext = createContext(null);
-
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -25,20 +24,27 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const login = async (email, password) => {
+    // @ts-nocheck
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5001";
     try {
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/auth/login`,
-        { email, password }
-      );
-      
-      localStorage.setItem("token", data.token);
-      const decodedUser = jwtDecode(data.token);
-      setUser(decodedUser);
-      setIsAuthenticated(true);
-      return decodedUser;
+      const response = await axios.post(`${API_URL}/api/auth/login`, { email, password });
+
+      if (response?.data?.token) {
+        const token = response.data.token;
+        localStorage.setItem("token", token);
+
+        const decodedUser = jwtDecode(token);
+        setUser(decodedUser);
+        setIsAuthenticated(true);
+
+        return decodedUser;
+      } else {
+        throw new Error("Invalid login response");
+      }
     } catch (error) {
-      logout();
-      throw error.response?.data?.message || "Login failed";
+      logout(); // ✅ Ensure state is cleared on failed login
+      console.error("Login Error:", error.response?.data?.message || error.message);
+      throw new Error(error.response?.data?.message || "Login failed");
     }
   };
 

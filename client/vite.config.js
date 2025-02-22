@@ -9,6 +9,12 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    mimeTypes: {
+      'application/javascript': ['js', 'jsx'],
+      'text/plain': ['md']
+    }
+  },
   base: "./", 
   build: {
     outDir: "dist", // ✅ Ensure correct output folder

@@ -6,14 +6,7 @@ import ProjectCreation from "./pages/ProjectCreation";
 import UploadFlow from "./pages/UploadFlow";
 import EditTranscript from "./pages/EditTranscript";
 import PrivateRoute from "./components/PrivateRoute";
-const updateEpisodeInProject = (updatedEpisode) => {
-  setProject((prevProject) => ({
-    ...prevProject,
-    episodes: prevProject.episodes.map((ep) =>
-      ep._id === updatedEpisode._id ? updatedEpisode : ep
-    ),
-  }));
-};
+
 function App() {
   return (
 <Routes>

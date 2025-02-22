@@ -3,6 +3,8 @@ const cors = require("cors");
 const connectDB = require("./config/db");
 
 require("dotenv").config();
+
+
 // ✅ CORS Configuration
 const allowedOrigins = [
     "http://localhost:5173",  // For local development (Vite default port)
@@ -10,6 +12,12 @@ const allowedOrigins = [
     "https://questai-cftf.onrender.com"  
   ];
 const app = express();
+app.use((req, res, next) => {
+    res.setHeader('Content-Type', 'application/javascript');
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    next();
+  });
+  
 app.use(cors({
     origin: allowedOrigins,
     credentials: true, // ✅ Allow cookies and authorization headers

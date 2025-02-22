@@ -7,7 +7,7 @@ require("dotenv").config();
 const allowedOrigins = [
     "http://localhost:5173",  // For local development (Vite default port)
     "http://localhost:3000",  // For local React dev server
-    "https://your-frontend.netlify.app"  
+    "https://questai-cftf.onrender.com"  
   ];
 const app = express();
 app.use(cors({

@@ -1,14 +1,14 @@
 services:
   - name: mern-backend
     type: web
-    runtime: node  # Add runtime property
-    rootDir: backend  # ✅ Set backend folder as root
+    runtime: node
+    rootDir: backend  # ✅ Set backend folder as root (if backend is inside `/backend`)
     buildCommand: npm install
-    startCommand: node index.js  # Change if needed
+    startCommand: node server.js  # ✅ Change if your entry file is different
     envVars:
       - key: MONGO_URI
-        sync: false  # Add manually in Render
+        sync: false  # Manually set in Render Dashboard
       - key: JWT_SECRET
-        sync: false  # Add manually in Render
+        sync: false  # Manually set in Render Dashboard
       - key: CLIENT_URL
         value: https://your-frontend.netlify.app  # Update after frontend deployment

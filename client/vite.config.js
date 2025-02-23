@@ -9,6 +9,11 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    open: true,
+    // Configure server to return index.html for unknown routes
+    hmr: true,
+  },
   base: "/", // ✅ Ensures assets load correctly
   build: {
     outDir: "dist",

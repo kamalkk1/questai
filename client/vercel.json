@@ -9,26 +9,15 @@
         }
       }
     ],
-    "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "/index.html",
-        "status": 200
-      }
-    ],
     "headers": [
-      {
-        "source": "/assets/(.*)",
-        "headers": [
-          { "key": "Content-Type", "value": "application/javascript" }
-        ]
-      },
-      {
-        "source": "/(.*).js",
-        "headers": [
-          { "key": "Content-Type", "value": "application/javascript" }
-        ]
-      }
-    ]
+        {
+          "source": "/assets/(.*.js)",
+          "headers": [{"key": "Content-Type", "value": "application/javascript"}]
+        }
+      ],
+      "routes": [
+        { "src": "/assets/.*", "dest": "/assets/[src]" },
+        { "src": ".*", "dest": "/index.html" }
+      ]
   }
   

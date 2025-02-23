@@ -6,7 +6,7 @@ function ProjectCard({ project }) {
 
   // ✅ Handle missing project gracefully
   if (!project || !project._id) {
-    return <div className="p-4 border rounded-md shadow-md">Loading project...</div>;
+    return <div className="p-4 border rounded-md shadow-md">Loading project....</div>;
   }
 
   // ✅ Ensure `updatedAt` is formatted correctly

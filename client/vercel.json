@@ -10,16 +10,23 @@
       }
     ],
     "routes": [
-      { "src": "/(.*)", "dest": "/index.html", "status": 200 }
+      {
+        "src": "/(.*)",
+        "dest": "/index.html",
+        "status": 200
+      }
     ],
     "headers": [
       {
-        "source": "/assets/(.*).js",
+        "source": "/assets/(.*)",
         "headers": [
-          {
-            "key": "Content-Type",
-            "value": "application/javascript"
-          }
+          { "key": "Content-Type", "value": "application/javascript" }
+        ]
+      },
+      {
+        "source": "/(.*).js",
+        "headers": [
+          { "key": "Content-Type", "value": "application/javascript" }
         ]
       }
     ]
